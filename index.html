@@ -6,204 +6,251 @@
     <title>متجر جنة - Jannah Store</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Tahoma', sans-serif; }
-        body { background-color: #fcf8f2; color: #4a3e3e; }
+        body { background-color: #fcf8f2; color: #4a3e3e; line-height: 1.6; }
         
         header { background: linear-gradient(135deg, #d4a373, #faedcd); padding: 30px; text-align: center; border-bottom: 4px solid #bc8a5f; }
-        header h1 { font-size: 2rem; color: #5d4037; }
+        header h1 { font-size: 2.2rem; color: #5d4037; }
 
-        nav { background: #fff; padding: 10px; display: flex; justify-content: center; gap: 15px; border-bottom: 1px solid #ddd; position: sticky; top: 0; z-index: 100; }
-        nav a { text-decoration: none; color: #d4a373; font-weight: bold; padding: 5px 10px; cursor: pointer; }
-        nav a.active { border-bottom: 2px solid #d4a373; }
+        nav { background: #fff; padding: 10px; display: flex; justify-content: center; gap: 20px; border-bottom: 1px solid #ddd; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        nav a { text-decoration: none; color: #d4a373; font-weight: bold; padding: 8px 15px; cursor: pointer; border-radius: 20px; transition: 0.3s; }
+        nav a.active { background: #d4a373; color: white; }
 
-        .container { max-width: 1000px; margin: 20px auto; padding: 15px; }
+        .container { max-width: 1100px; margin: 20px auto; padding: 0 15px; }
         
-        /* نظام التوصيل */
-        .delivery-card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); text-align: center; }
-        select { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #ddd; font-size: 1rem; }
-        .price-tag { font-size: 1.5rem; color: #d4a373; font-weight: bold; margin-top: 15px; }
+        /* أسعار التوصيل */
+        .delivery-box { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); text-align: center; max-width: 600px; margin: 0 auto; }
+        select { width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px; border: 1px solid #ddd; outline: none; font-size: 1rem; }
+        .price-display { font-size: 1.8rem; color: #d4a373; font-weight: bold; margin-top: 20px; padding: 15px; border-top: 1px dashed #ddd; }
 
-        /* شبكة المنتجات */
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
-        .card { background: white; padding: 15px; border-radius: 15px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-        .card img { width: 100%; height: 200px; object-fit: cover; border-radius: 10px; }
+        /* المنتجات */
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+        .card { background: white; padding: 15px; border-radius: 15px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border: 1px solid #f0f0f0; }
+        .card img { width: 100%; height: 230px; object-fit: cover; border-radius: 10px; }
+        .card h3 { margin: 15px 0 5px; color: #333; }
+        .card .price { font-size: 1.4rem; color: #d4a373; font-weight: bold; margin-bottom: 15px; }
         
-        /* لوحة التحكم */
-        .admin-trigger { position: fixed; bottom: 10px; left: 10px; width: 30px; height: 30px; background: rgba(0,0,0,0.05); border-radius: 50%; cursor: pointer; }
-        #loginOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; align-items: center; justify-content: center; }
-        .admin-panel { display: none; background: white; padding: 20px; border-radius: 15px; margin-top: 20px; border: 2px solid #d4a373; }
+        .whatsapp-btn { background: #25d366; color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; text-decoration: none; display: block; }
+        
+        /* الإدارة */
+        .admin-secret-link { position: fixed; bottom: 5px; left: 5px; width: 20px; height: 20px; opacity: 0.1; cursor: pointer; }
+        #loginModal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:999; align-items:center; justify-content:center; }
+        .admin-panel { display: none; background: white; padding: 25px; border-radius: 15px; border: 3px solid #d4a373; margin-bottom: 50px; }
+        .admin-panel input, .admin-panel select { margin-bottom: 15px; border: 1px solid #ccc; width: 100%; padding: 10px; border-radius: 8px; }
         
         .hidden { display: none; }
-        .whatsapp-btn { background: #25d366; color: white; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; text-decoration: none; display: block; margin-top: 10px; }
     </style>
 </head>
 <body>
 
 <header>
     <h1>🧁 متجر جنة للحلويات</h1>
-    <p>أهلاً بك في ركن الحلويات الفاخرة</p>
+    <p>أرقى أنواع الحلويات لجميع مناسباتكم</p>
 </header>
 
 <nav>
-    <a onclick="showTab('products')" id="link-products" class="active">المنتجات</a>
-    <a onclick="showTab('delivery')" id="link-delivery">أسعار التوصيل</a>
+    <a onclick="showPage('products')" id="btn-products" class="active">🎁 قائمة الحلويات</a>
+    <a onclick="showPage('delivery')" id="btn-delivery">🚚 أسعار التوصيل</a>
 </nav>
 
-<div class="container" id="tab-products">
-    <div id="productDisplay" class="product-grid"></div>
+<div id="page-products" class="container">
+    <div id="productGrid" class="product-grid"></div>
 </div>
 
-<div class="container hidden" id="tab-delivery">
-    <div class="delivery-card">
-        <h3>🚚 استعلم عن سعر التوصيل</h3>
-        <p>اختر ولايتك وبلديتك لمعرفة التكلفة</p>
-        
-        <select id="wilayaSelect" onchange="updateCommunes()">
-            <option value="">-- اختر الولاية --</option>
-        </select>
-        
-        <select id="communeSelect" onchange="displayDeliveryPrice()" disabled>
-            <option value="">-- اختر البلدية --</option>
-        </select>
-
-        <div id="deliveryPriceResult" class="price-tag"></div>
+<div id="page-delivery" class="container hidden">
+    <div class="delivery-box">
+        <h3>حساب تكلفة التوصيل</h3>
+        <p style="color: #888; margin-bottom: 15px;">اختر ولايتك والبلدية ليظهر لك السعر</p>
+        <select id="wilayaList" onchange="loadCommunes()"><option value="">-- اختر الولاية --</option></select>
+        <select id="communeList" onchange="showFinalPrice()" disabled><option value="">-- اختر البلدية --</option></select>
+        <div id="finalPrice" class="price-display"></div>
     </div>
 </div>
 
-<div class="admin-trigger" onclick="document.getElementById('loginOverlay').style.display='flex'"></div>
-
-<div id="loginOverlay">
-    <div style="background:white; padding:20px; border-radius:10px; text-align:center;">
-        <input type="password" id="passInput" placeholder="كلمة المرور" style="padding:10px; margin-bottom:10px; width:100%;">
-        <button onclick="checkPass()" style="padding:10px 20px; background:#d4a373; color:white; border:none; border-radius:5px;">دخول</button>
-        <button onclick="document.getElementById('loginOverlay').style.display='none'" style="background:none; border:none; color:grey;">إلغاء</button>
+<div class="admin-secret-link" onclick="openLogin()"></div>
+<div id="loginModal">
+    <div style="background:#white; padding:30px; border-radius:15px; text-align:center; background:white;">
+        <h4>رمز المدير</h4>
+        <input type="password" id="adminKey" style="margin:15px 0; padding:10px; width:100%;">
+        <button onclick="accessAdmin()" style="padding:10px 20px; background:#d4a373; color:white; border:none; border-radius:10px; cursor:pointer;">دخول</button>
+        <button onclick="document.getElementById('loginModal').style.display='none'" style="background:none; border:none; color:gray; display:block; width:100%; margin-top:10px;">إلغاء</button>
     </div>
 </div>
 
-<div id="adminPanel" class="container">
-    <h2 style="color:#d4a373">🛠️ لوحة الإدارة</h2>
-    <hr><br>
-    <h4>إضافة منتج:</h4>
-    <input type="text" id="pName" placeholder="اسم المنتج" style="width:100%; padding:10px; margin:5px 0;">
-    <input type="number" id="pPrice" placeholder="السعر" style="width:100%; padding:10px; margin:5px 0;">
-    <input type="file" id="pImg" accept="image/*" style="margin:10px 0;">
-    <button onclick="addNewProduct()" style="width:100%; padding:10px; background:#d4a373; color:white; border:none;">إضافة المنتج</button>
-    
-    <br><br>
-    <h4>تعديل سعر التوصيل للولاية:</h4>
-    <select id="adminWilaya">
-        <option value="">اختر الولاية لتعديل سعرها</option>
-    </select>
-    <input type="number" id="newDeliveryPrice" placeholder="السعر الجديد للتوصيل">
-    <button onclick="updateDeliveryPrice()" style="width:100%; padding:10px; background:#5d4037; color:white; border:none;">تحديث سعر التوصيل</button>
-    
-    <br><br>
-    <button onclick="location.reload()" style="background:#ff5252; color:white; padding:10px; width:100%; border:none;">خروج وحفظ</button>
+<div id="adminArea" class="container">
+    <div class="admin-panel">
+        <h3>🛠️ إدارة المتجر</h3>
+        <hr><br>
+        <h4>1. إضافة منتج جديد:</h4>
+        <input type="text" id="addName" placeholder="اسم الحلوى">
+        <input type="number" id="addPrice" placeholder="السعر (دج)">
+        <input type="file" id="addFile" accept="image/*">
+        <button onclick="saveProduct()" style="background:#25d366; color:white; padding:12px; width:100%; border:none; border-radius:10px; font-weight:bold; cursor:pointer;">حفظ المنتج</button>
+        
+        <br><br>
+        <h4>2. تعديل سعر التوصيل لولاية:</h4>
+        <select id="adminWilayaList"></select>
+        <input type="number" id="newDelPrice" placeholder="السعر الجديد">
+        <button onclick="saveDelPrice()" style="background:#5d4037; color:white; padding:12px; width:100%; border:none; border-radius:10px; cursor:pointer;">تحديث سعر التوصيل</button>
+        
+        <br><br>
+        <button onclick="location.reload()" style="background:#e74c3c; color:white; padding:10px; width:100%; border:none; border-radius:10px; cursor:pointer;">حفظ وخروج</button>
+    </div>
 </div>
 
 <script>
-    const KEY = "hh301049";
-    let products = JSON.parse(localStorage.getItem('jannah_products')) || [];
-    let deliveryPrices = JSON.parse(localStorage.getItem('jannah_delivery')) || { "Batna": 400, "Algiers": 600 }; 
+    const PASS = "hh301049";
+    let products = JSON.parse(localStorage.getItem('jannah_prods')) || [];
+    let delPrices = JSON.parse(localStorage.getItem('jannah_del')) || { "05-باتنة": 300, "16-الجزائر": 600 };
 
-    // مصفوفة مبسطة للولايات (يمكنك إكمال الـ 58 ولاية هنا)
-    const algeriaData = {
-        "01-أدرار": ["أدرار", "فنوغيل", "أولاد أحمد تيمي"],
-        "05-باتنة": ["باتنة", "رأس العيون", "بريكة", "عين التوتة", "مروانة"],
-        "16-الجزائر": ["سيدي امحمد", "الدار البيضاء", "باب الوادي", "الحراش"],
-        "19-سطيف": ["سطيف", "العلمة", "عين أرنات"],
-        "25-قسنطينة": ["قسنطينة", "الخروب", "حامة بوزيان"]
-        // يمكن إضافة باقي الولايات والبلديات بنفس النمط
+    // القائمة الكاملة لولايات الجزائر الـ 58
+    const dzData = {
+        "01-أدرار": ["أدرار", "تمقطن", "أولاد أحمد تيمي", "رقان"],
+        "02-الشلف": ["الشلف", "تنس", "أبو الحسن", "أولاد فارس"],
+        "03-الأغواط": ["الأغواط", "آفلو", "عين ماضي", "حاسي الرمل"],
+        "04-أم البواقي": ["أم البواقي", "عين البيضاء", "عين مليلة"],
+        "05-باتنة": ["باتنة", "رأس العيون", "بريكة", "عين التوتة", "مروانة", "أريس"],
+        "06-بجاية": ["بجاية", "أقبو", "القصر", "أميزور"],
+        "07-بسكرة": ["بسكرة", "أولاد جلال", "طولقة", "سيدي عقبة"],
+        "08-بشار": ["بشار", "القنادسة", "تاغيت", "بني عباس"],
+        "09-البليدة": ["البليدة", "بوفاريك", "العفرون", "الأربعاء"],
+        "10-البويرة": ["البويرة", "الأخضرية", "سور الغزلان"],
+        "11-تمنراست": ["تمنراست", "عين صالح", "عين قزام"],
+        "12-تبسة": ["تبسة", "بئر العاتر", "الشريعة", "الونزة"],
+        "13-تلمسان": ["تلمسان", "مغنية", "سبدو", "الغزوات"],
+        "14-تيارت": ["تيارت", "فرندة", "قصر الشلالة"],
+        "15-تيزي وزو": ["تيزي وزو", "عزازقة", "ذراع بن خدة"],
+        "16-الجزائر": ["سيدي امحمد", "باب الوادي", "الحراش", "الدار البيضاء", "بئر مراد رايس"],
+        "17-الجلفة": ["الجلفة", "حاسي بحبح", "مسعد", "عين وسارة"],
+        "18-جيجل": ["جيجل", "الطاهير", "الميلية"],
+        "19-سطيف": ["سطيف", "العلمة", "عين أرنات", "بوقاعة"],
+        "20-سعيدة": ["سعيدة", "الحساسنة", "عين الحجر"],
+        "21-سكيكدة": ["سكيكدة", "الحروش", "عزابة", "القُل"],
+        "22-سيدي بلعباس": ["سيدي بلعباس", "تسالة", "سفيزف"],
+        "23-عنابة": ["عنابة", "البوني", "الحجار", "برحال"],
+        "24-قالمة": ["قالمة", "وادي الزناتي", "بوشقوف"],
+        "25-قسنطينة": ["قسنطينة", "الخروب", "حامة بوزيان", "زيغود يوسف"],
+        "26-المدية": ["المدية", "البرواقية", "قصر البخاري"],
+        "27-مستغانم": ["مستغانم", "عين تادلس", "سيدي علي"],
+        "28-المسيلة": ["المسيلة", "بوسعادة", "سيدي عيسى"],
+        "29-معسكر": ["معسكر", "سيق", "تيغنيف"],
+        "30-ورقلة": ["ورقلة", "حاسي مسعود", "تقرت"],
+        "31-وهران": ["وهران", "عين الترك", "أرزيو", "بئر الجير"],
+        "32-البيض": ["البيض", "بوقطب", "شلالة"],
+        "33-إليزي": ["إليزي", "جانت", "إن أميناس"],
+        "34-برج بوعريريج": ["برج بوعريريج", "رأس الوادي", "برج غدير"],
+        "35-بومرداس": ["بومرداس", "بودواو", "دلس", "خميس الخشنة"],
+        "36-الطارف": ["الطارف", "القالة", "الذرعان"],
+        "37-تندوف": ["تندوف"],
+        "38-تيسمسيلت": ["تيسمسيلت", "ثنية الحد"],
+        "39-الوادي": ["الوادي", "جامعة", "المغير"],
+        "40-خنشلة": ["خنشلة", "ششار", "قايس"],
+        "41-سوق أهراس": ["سوق أهراس", "سدراتة", "مداوروش"],
+        "42-تيبازة": ["تيبازة", "شرشال", "القليعة"],
+        "43-ميلة": ["ميلة", "شلغوم العيد", "فرادوة"],
+        "44-عين الدفلى": ["عين الدفلى", "خميس مليانة", "العطاف"],
+        "45-النعامة": ["النعامة", "مشرية", "عين الصفراء"],
+        "46-عين تموشنت": ["عين تموشنت", "بني صاف", "حممام بوحجر"],
+        "47-غرداية": ["غرداية", "متليلي", "القرارة"],
+        "48-غليزان": ["غليزان", "وادي ارهيو", "مازونة"],
+        "49-تيميمون": ["تيميمون"],
+        "50-برج باجي مختار": ["برج باجي مختار"],
+        "51-أولاد جلال": ["أولاد جلال"],
+        "52-بني عباس": ["بني عباس"],
+        "53-عين صالح": ["عين صالح"],
+        "54-عين قزام": ["عين قزام"],
+        "55-تقرت": ["تقرت"],
+        "56-جانت": ["جانت"],
+        "57-المغير": ["المغير"],
+        "58-المنيعة": ["المنيعة"]
     };
 
-    function showTab(tab) {
-        document.getElementById('tab-products').classList.add('hidden');
-        document.getElementById('tab-delivery').classList.add('hidden');
-        document.getElementById('link-products').classList.remove('active');
-        document.getElementById('link-delivery').classList.remove('active');
+    function showPage(pageId) {
+        document.getElementById('page-products').classList.add('hidden');
+        document.getElementById('page-delivery').classList.add('hidden');
+        document.getElementById('btn-products').classList.remove('active');
+        document.getElementById('btn-delivery').classList.remove('active');
         
-        document.getElementById('tab-' + tab).classList.remove('hidden');
-        document.getElementById('link-' + tab).classList.add('active');
+        document.getElementById('page-' + pageId).classList.remove('hidden');
+        document.getElementById('btn-' + pageId).classList.add('active');
     }
 
-    function initWilayas() {
-        const select = document.getElementById('wilayaSelect');
-        const adminSelect = document.getElementById('adminWilaya');
-        for (let wilaya in algeriaData) {
-            let opt = new Option(wilaya, wilaya);
-            select.add(opt);
-            adminSelect.add(new Option(wilaya, wilaya));
+    function initLists() {
+        const wilayaSel = document.getElementById('wilayaList');
+        const adminWilayaSel = document.getElementById('adminWilayaList');
+        for (let w in dzData) {
+            wilayaSel.add(new Option(w, w));
+            adminWilayaSel.add(new Option(w, w));
         }
     }
 
-    function updateCommunes() {
-        const wilaya = document.getElementById('wilayaSelect').value;
-        const commSelect = document.getElementById('communeSelect');
-        commSelect.innerHTML = '<option value="">-- اختر البلدية --</option>';
-        
-        if (wilaya) {
-            algeriaData[wilaya].forEach(c => commSelect.add(new Option(c, c)));
-            commSelect.disabled = false;
-        } else {
-            commSelect.disabled = true;
-        }
-        document.getElementById('deliveryPriceResult').innerText = '';
+    function loadCommunes() {
+        const w = document.getElementById('wilayaList').value;
+        const cSel = document.getElementById('communeList');
+        cSel.innerHTML = '<option value="">-- اختر البلدية --</option>';
+        if(w) {
+            dzData[w].forEach(c => cSel.add(new Option(c, c)));
+            cSel.disabled = false;
+        } else { cSel.disabled = true; }
+        document.getElementById('finalPrice').innerText = '';
     }
 
-    function displayDeliveryPrice() {
-        const wilaya = document.getElementById('wilayaSelect').value;
-        const price = deliveryPrices[wilaya] || "غير محدد";
-        document.getElementById('deliveryPriceResult').innerText = "سعر التوصيل لهذه المنطقة: " + price + " دج";
+    function showFinalPrice() {
+        const w = document.getElementById('wilayaList').value;
+        const price = delPrices[w] || "اتصل بنا لتحديد السعر";
+        document.getElementById('finalPrice').innerText = price === "اتصل بنا لتحديد السعر" ? price : "تكلفة التوصيل: " + price + " دج";
     }
 
-    function checkPass() {
-        if(document.getElementById('passInput').value === KEY) {
-            document.getElementById('loginOverlay').style.display = 'none';
-            document.getElementById('adminPanel').style.display = 'block';
-        } else { alert("خطأ!"); }
+    function openLogin() { document.getElementById('loginModal').style.display='flex'; }
+    function accessAdmin() {
+        if(document.getElementById('adminKey').value === PASS) {
+            document.getElementById('loginModal').style.display='none';
+            document.querySelector('.admin-panel').style.display='block';
+            window.scrollTo(0, document.body.scrollHeight);
+        } else { alert("الرمز خاطئ"); }
     }
 
-    function updateDeliveryPrice() {
-        const w = document.getElementById('adminWilaya').value;
-        const p = document.getElementById('newDeliveryPrice').value;
-        if(w && p) {
-            deliveryPrices[w] = p;
-            localStorage.setItem('jannah_delivery', JSON.stringify(deliveryPrices));
-            alert("تم تحديث السعر للولاية بنجاح");
-        }
-    }
-
-    function addNewProduct() {
-        const name = document.getElementById('pName').value;
-        const price = document.getElementById('pPrice').value;
-        const file = document.getElementById('pImg').files[0];
-        if(!name || !price || !file) return alert("أكمل البيانات");
-
+    function saveProduct() {
+        const n = document.getElementById('addName').value;
+        const p = document.getElementById('addPrice').value;
+        const f = document.getElementById('addFile').files[0];
+        if(!n || !p || !f) return alert("أدخل كل البيانات");
         const reader = new FileReader();
         reader.onload = function(e) {
-            products.push({ id: Date.now(), name, price, img: e.target.result });
-            localStorage.setItem('jannah_products', JSON.stringify(products));
+            products.push({ id: Date.now(), name: n, price: p, img: e.target.result });
+            localStorage.setItem('jannah_prods', JSON.stringify(products));
             renderProducts();
-            alert("تمت الإضافة");
+            alert("تمت الإضافة بنجاح");
         };
-        reader.readAsDataURL(file);
+        reader.readAsDataURL(f);
+    }
+
+    function saveDelPrice() {
+        const w = document.getElementById('adminWilayaList').value;
+        const p = document.getElementById('newDelPrice').value;
+        if(w && p) {
+            delPrices[w] = p;
+            localStorage.setItem('jannah_del', JSON.stringify(delPrices));
+            alert("تم تحديث سعر ولاية " + w);
+        }
     }
 
     function renderProducts() {
-        const display = document.getElementById('productDisplay');
-        display.innerHTML = '';
+        const grid = document.getElementById('productGrid');
+        grid.innerHTML = '';
         products.forEach(p => {
-            display.innerHTML += `
+            grid.innerHTML += `
                 <div class="card">
                     <img src="${p.img}">
-                    <h4>${p.name}</h4>
-                    <p style="color:#d4a373; font-weight:bold;">${p.price} دج</p>
+                    <h3>${p.name}</h3>
+                    <div class="price">${p.price} دج</div>
                     <a href="https://wa.me/213663700122?text=أود طلب: ${p.name}" class="whatsapp-btn">اطلب عبر واتساب</a>
-                </div>`;
+                </div>
+            `;
         });
     }
 
     window.onload = function() {
-        initWilayas();
+        initLists();
         renderProducts();
     };
 </script>
