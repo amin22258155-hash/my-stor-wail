@@ -3,200 +3,253 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>متجري - نظام التوصيل والطلب</title>
+    <title id="pageTitle">متجري - متجر العمولة</title>
     <style>
-        /* التنسيقات الأصلية مع إضافة لمسات للتبويبات الجديدة */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Tahoma', Arial, sans-serif; background: #f5f5f5; color: #333; }
-        header { background: linear-gradient(135deg, #075e54, #128c7e); color: white; padding: 20px; text-align: center; position: sticky; top: 0; z-index: 100; }
+        body { font-family: 'Tahoma', 'Segoe UI', Arial, sans-serif; background: #f5f5f5; color: #333; }
+        header { background: linear-gradient(135deg, #075e54, #128c7e); color: white; padding: 20px; text-align: center; position: sticky; top: 0; z-index: 100; transition: background 0.3s; }
+        .logo-container { display: flex; align-items: center; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        .store-logo { max-height: 60px; max-width: 120px; object-fit: contain; background: white; padding: 5px; border-radius: 10px; }
         .store-name { font-size: 1.8rem; }
-        
-        nav { background: white; padding: 12px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 70px; z-index: 90; }
-        nav a { display: inline-block; margin: 0 10px; text-decoration: none; color: #075e54; font-weight: bold; padding: 8px 16px; border-radius: 25px; cursor: pointer; }
-        nav a.active { background: #075e54; color: white; }
-
+        .admin-btn { position: fixed; bottom: 20px; left: 20px; background: #1e1e2f; color: white; border: none; padding: 12px 20px; border-radius: 50px; cursor: pointer; z-index: 200; font-weight: bold; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+        nav { background: white; padding: 12px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); overflow-x: auto; white-space: nowrap; }
+        nav a { display: inline-block; margin: 0 10px; text-decoration: none; color: #075e54; font-weight: bold; padding: 8px 16px; border-radius: 25px; transition: 0.3s; cursor: pointer; }
+        nav a:hover, nav a.active { background: #075e54; color: white; }
         .container { max-width: 1200px; margin: 20px auto; padding: 0 15px; }
+        .category { margin-bottom: 40px; scroll-margin-top: 80px; }
+        .category h2 { background: #fff; padding: 12px 20px; border-right: 5px solid #128c7e; margin-bottom: 20px; border-radius: 10px; }
+        .products { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
+        .product-card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: transform 0.2s; cursor: pointer; }
+        .product-card:hover { transform: translateY(-5px); }
+        .product-img { width: 100%; height: 200px; object-fit: cover; background: #eee; }
+        .product-info { padding: 15px; }
+        .product-price { color: #e67e22; font-size: 1.3rem; font-weight: bold; margin: 10px 0; }
+        .buy-btn { display: block; background: #25d366; color: white; text-align: center; padding: 10px; border-radius: 30px; font-weight: bold; border: none; width: 100%; cursor: pointer; }
         
-        /* تصميم قسم التوصيل الجديد */
-        .delivery-section { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align: center; max-width: 600px; margin: 20px auto; }
-        .delivery-section select { width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px; border: 1px solid #ddd; }
-        .price-result { font-size: 1.5rem; color: #e67e22; font-weight: bold; margin-top: 20px; }
+        /* تصميم جدول الشحن */
+        .shipping-table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; }
+        .shipping-table th, .shipping-table td { padding: 15px; text-align: right; border-bottom: 1px solid #eee; }
+        .shipping-table th { background: #128c7e; color: white; }
+        .search-box { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 10px; font-size: 1rem; }
 
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-        .product-card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 15px; text-align: center; }
-        .product-card img { width: 100%; height: 200px; object-fit: cover; border-radius: 10px; }
-        
-        .buy-btn { background: #25d366; color: white; border: none; padding: 10px; width: 100%; border-radius: 30px; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        .admin-btn { position: fixed; bottom: 20px; left: 20px; background: #1e1e2f; color: white; border: none; padding: 12px 20px; border-radius: 50px; cursor: pointer; z-index: 200; }
-        
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; }
-        .modal-content { background: white; width: 90%; max-width: 500px; border-radius: 20px; padding: 25px; overflow-y: auto; max-height: 90vh; }
-        
-        .hidden { display: none; }
+        .modal-content { background: white; width: 90%; max-width: 500px; border-radius: 20px; padding: 25px; text-align: center; max-height: 90vh; overflow-y: auto; }
+        .modal-content input, .modal-content textarea, .modal-content select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 10px; font-family: inherit; }
+        .modal-buttons { display: flex; gap: 10px; margin-top: 20px; }
+        .send-btn, .save-btn { background: #25d366; color: white; border: none; padding: 12px; flex: 1; border-radius: 30px; cursor: pointer; }
+        .cancel-btn { background: #ccc; color: #333; border: none; padding: 12px; flex: 1; border-radius: 30px; cursor: pointer; }
+        footer { background: #1e1e2f; color: #aaa; text-align: center; padding: 20px; margin-top: 40px; }
     </style>
 </head>
 <body>
 
-<header>
-    <h1 id="storeName">🛍️ متجري</h1>
-    <p>توصيل لجميع الولايات الجزائري</p>
+<header id="mainHeader">
+    <div class="logo-container">
+        <img id="storeLogo" class="store-logo" src="" alt="شعار المتجر" style="display:none">
+        <h1 id="storeName" class="store-name">🇩🇿 متجري</h1>
+    </div>
+    <p id="storeSlogan">اطلب عبر واتساب - نوفر لك أفضل المنتجات بالدينار الجزائري</p>
 </header>
 
-<nav id="mainNav">
-    <a onclick="showPage('products')" id="nav-products" class="active">المنتجات</a>
-    <a onclick="showPage('delivery')" id="nav-delivery">أسعار التوصيل</a>
+<nav id="navLinks">
+    <a onclick="showSection('home')">🏠 الرئيسية</a>
+    <a data-cat="women">👗 نسائي</a>
+    <a data-cat="men">👔 رجالي</a>
+    <a data-cat="electronics">📱 إلكترونيات</a>
+    <a onclick="showSection('shipping')">🚚 أسعار التوصيل</a>
 </nav>
 
-<div class="container" id="page-products">
-    <div id="productsDisplay" class="products-grid"></div>
-</div>
+<div class="container" id="app"></div>
 
-<div class="container hidden" id="page-delivery">
-    <div class="delivery-section">
-        <h3>🚚 استعلام عن سعر التوصيل</h3>
-        <select id="userWilaya" onchange="loadUserCommunes()">
-            <option value="">-- اختر الولاية --</option>
-        </select>
-        <select id="userCommune" onchange="showPriceToUser()" disabled>
-            <option value="">-- اختر البلدية --</option>
-        </select>
-        <div id="userPriceDisplay" class="price-result"></div>
+<button class="admin-btn" onclick="showAdminLogin()">🔐 لوحة التحكم</button>
+
+<footer>
+    <p>© 2026 جنة - جميع الطلبات عبر واتساب - الأسعار بالدينار الجزائري (دج)</p>
+</footer>
+
+<div id="orderModal" class="modal">
+    <div class="modal-content">
+        <h3>📝 أتمم طلبك</h3>
+        <input type="text" id="customerName" placeholder="الاسم الكامل">
+        <input type="tel" id="customerPhone" placeholder="رقم الجوال">
+        <textarea id="customerAddress" rows="2" placeholder="العنوان والولاية"></textarea>
+        <input type="text" id="productNameDisplay" readonly style="background:#f0f0f0;">
+        <select id="whatsappSelect"></select>
+        <div class="modal-buttons">
+            <button class="send-btn" onclick="sendToWhatsApp()">إرسال للواتساب</button>
+            <button class="cancel-btn" onclick="closeModal()">إلغاء</button>
+        </div>
     </div>
 </div>
 
-<button class="admin-btn" onclick="askAdminPass()">🔐 الإدارة</button>
-
 <div id="adminModal" class="modal">
-    <div class="modal-content">
-        <h3>⚙️ لوحة تحكم المدير</h3>
-        <hr><br>
-        <h4>إضافة منتج:</h4>
-        <input type="text" id="pName" placeholder="اسم المنتج" style="width:100%; padding:10px; margin:5px 0;">
-        <input type="number" id="pPrice" placeholder="السعر" style="width:100%; padding:10px; margin:5px 0;">
-        <input type="file" id="pImg" accept="image/*" style="margin:10px 0;">
-        <button onclick="addProduct()" style="width:100%; padding:10px; background:#25d366; color:white; border:none; border-radius:10px;">إضافة</button>
+    <div class="modal-content" style="max-width:600px">
+        <h3>⚙️ لوحة التحكم</h3>
+        <div style="display:flex; gap:5px; margin-bottom:15px; flex-wrap:wrap">
+            <button onclick="showAdminSection('products')" style="flex:1; padding:8px; background:#075e54; color:white; border:none; border-radius:10px">📦 المنتجات</button>
+            <button onclick="showAdminSection('shipping')" style="flex:1; padding:8px; background:#128c7e; color:white; border:none; border-radius:10px">🚚 التوصيل</button>
+            <button onclick="showAdminSection('settings')" style="flex:1; padding:8px; background:#e67e22; color:white; border:none; border-radius:10px">🎨 الإعدادات</button>
+        </div>
         
-        <br><br><hr><br>
-        <h4>تعديل أسعار التوصيل:</h4>
-        <select id="adminWilayaList" style="width:100%; padding:10px;"></select>
-        <input type="number" id="newWilayaPrice" placeholder="السعر الجديد لهذه الولاية" style="width:100%; padding:10px; margin:5px 0;">
-        <button onclick="updateDeliveryPrice()" style="width:100%; padding:10px; background:#075e54; color:white; border:none; border-radius:10px;">تحديث السعر</button>
+        <div id="adminProductsSection">
+            <select id="adminAction" onchange="updateAdminFields()">
+                <option value="add">➕ إضافة منتج جديد</option>
+                <option value="delete">🗑️ حذف منتج</option>
+            </select>
+            <div id="adminFields"></div>
+            <button class="save-btn" onclick="executeAdminAction()" style="margin-top:10px">تنفيذ</button>
+        </div>
+
+        <div id="adminShippingSection" style="display:none">
+            <h4>تعديل أسعار التوصيل (الولاية)</h4>
+            <select id="shippingStateSelect" onchange="loadStatePrice()"></select>
+            <input type="text" id="homePriceInput" placeholder="سعر التوصيل للمنزل">
+            <input type="text" id="officePriceInput" placeholder="سعر التوصيل للمكتب">
+            <button class="save-btn" onclick="saveShippingPrice()">حفظ السعر</button>
+        </div>
+
+        <div id="adminSettingsSection" style="display:none">
+            <input type="text" id="storeNameInput" placeholder="اسم المتجر">
+            <input type="text" id="storeSloganInput" placeholder="الشعار النصي">
+            <button class="save-btn" onclick="saveStoreSettings()">حفظ الإعدادات</button>
+        </div>
         
-        <br><br>
-        <button onclick="closeAdmin()" style="width:100%; padding:10px; background:#ccc; border:none; border-radius:10px;">إغلاق</button>
+        <button class="cancel-btn" onclick="closeAdminModal()" style="margin-top:15px">إغلاق</button>
     </div>
 </div>
 
 <script>
-    const ADMIN_PASS = "hh301049";
-    let products = JSON.parse(localStorage.getItem('my_prods')) || [];
-    let deliveryPrices = JSON.parse(localStorage.getItem('my_delivery')) || {};
+    let products = { women: [], men: [], electronics: [], summer: [], health: [] };
+    let shippingPrices = [];
+    let whatsappNumbers = ["213663700122"];
+    let storeSettings = { name: "🇩🇿 متجري", slogan: "اطلب عبر واتساب", primaryColor: "#075e54", logo: "" };
 
-    const dzData = {
-        "01-أدرار": ["أدرار", "رقان", "فنوغيل"], "02-الشلف": ["الشلف", "تنس"], "03-الأغواط": ["الأغواط", "آفلو"],
-        "04-أم البواقي": ["أم البواقي", "عين مليلة"], "05-باتنة": ["باتنة", "رأس العيون", "بريكة", "عين التوتة"],
-        "06-بجاية": ["بجاية", "أقبو"], "07-بسكرة": ["بسكرة", "طولقة"], "08-بشار": ["بشار", "تاغيت"],
-        "09-البليدة": ["البليدة", "بوفاريك"], "10-البويرة": ["البويرة", "الأخضرية"], "11-تمنراست": ["تمنراست"],
-        "12-تبسة": ["تبسة", "بئر العاتر"], "13-تلمسان": ["تلمسان", "مغنية"], "14-تيارت": ["تيارت"],
-        "15-تيزي وزو": ["تيزي وزو"], "16-الجزائر": ["سيدي امحمد", "الحراش", "الدار البيضاء"],
-        "17-الجلفة": ["الجلفة", "مسعد"], "18-جيجل": ["جيجل"], "19-سطيف": ["سطيف", "العلمة"],
-        "20-سعيدة": ["سعيدة"], "21-سكيكدة": ["سكيكدة"], "22-سيدي بلعباس": ["سيدي بلعباس"],
-        "23-عنابة": ["عنابة"], "24-قالمة": ["قالمة"], "25-قسنطينة": ["قسنطينة", "الخروب"],
-        "26-المدية": ["المدية"], "27-مستغانم": ["مستغانم"], "28-المسيلة": ["المسيلة", "بوسعادة"],
-        "29-معسكر": ["معسكر"], "30-ورقلة": ["ورقلة", "حاسي مسعود"], "31-وهران": ["وهران", "أرزيو"],
-        "32-البيض": ["البيض"], "33-إليزي": ["إليزي"], "34-برج بوعريريج": ["برج بوعريريج"],
-        "35-بومرداس": ["بومرداس"], "36-الطارف": ["الطارف"], "37-تندوف": ["تندوف"],
-        "38-تيسمسيلت": ["تيسمسيلت"], "39-الوادي": ["الوادي"], "40-خنشلة": ["خنشلة"],
-        "41-سوق أهراس": ["سوق أهراس"], "42-تيبازة": ["تيبازة"], "43-ميلة": ["ميلة"],
-        "44-عين الدفلى": ["عين الدفلى"], "45-النعامة": ["النعامة"], "46-عين تموشنت": ["عين تموشنت"],
-        "47-غرداية": ["غرداية"], "48-غليزان": ["غليزان"], "49-تيميمون": ["تيميمون"],
-        "50-برج باجي مختار": ["برج باجي مختار"], "51-أولاد جلال": ["أولاد جلال"],
-        "52-بني عباس": ["بني عباس"], "53-عين صالح": ["عين صالح"], "54-عين قزام": ["عين قزام"],
-        "55-تقرت": ["تقرت"], "56-جانت": ["جانت"], "57-المغير": ["المغير"], "58-المنيعة": ["المنيعة"]
-    };
+    // تهيئة الولايات الافتراضية
+    const defaultStates = [
+        { id: "01", name: "أدرار", home: "1000", office: "600" },
+        { id: "05", name: "باتنة", home: "500", office: "300" },
+        { id: "16", name: "الجزائر العاصمة", home: "400", office: "250" },
+        { id: "31", name: "وهران", home: "600", office: "400" }
+    ];
 
-    function showPage(p) {
-        document.getElementById('page-products').className = p === 'products' ? 'container' : 'container hidden';
-        document.getElementById('page-delivery').className = p === 'delivery' ? 'container' : 'container hidden';
-        document.getElementById('nav-products').className = p === 'products' ? 'active' : '';
-        document.getElementById('nav-delivery').className = p === 'delivery' ? 'active' : '';
+    function init() {
+        const savedProducts = localStorage.getItem("myAffiliateProducts");
+        if (savedProducts) products = JSON.parse(savedProducts);
+        
+        const savedShipping = localStorage.getItem("shippingPrices");
+        shippingPrices = savedShipping ? JSON.parse(savedShipping) : defaultStates;
+        
+        const savedSettings = localStorage.getItem("storeSettings");
+        if (savedSettings) storeSettings = JSON.parse(savedSettings);
+
+        applyStoreSettings();
+        showSection('home');
     }
 
-    function initData() {
-        const uSel = document.getElementById('userWilaya');
-        const aSel = document.getElementById('adminWilayaList');
-        for (let w in dzData) {
-            uSel.add(new Option(w, w));
-            aSel.add(new Option(w, w));
-        }
-        renderProducts();
-    }
-
-    function loadUserCommunes() {
-        const w = document.getElementById('userWilaya').value;
-        const cSel = document.getElementById('userCommune');
-        cSel.innerHTML = '<option value="">-- اختر البلدية --</option>';
-        if(w) {
-            dzData[w].forEach(c => cSel.add(new Option(c, c)));
-            cSel.disabled = false;
-        } else { cSel.disabled = true; }
-        document.getElementById('userPriceDisplay').innerText = '';
-    }
-
-    function showPriceToUser() {
-        const w = document.getElementById('userWilaya').value;
-        const price = deliveryPrices[w] || "غير محدد حالياً";
-        document.getElementById('userPriceDisplay').innerText = "سعر التوصيل: " + price + (isNaN(price) ? "" : " دج");
-    }
-
-    function askAdminPass() {
-        const p = prompt("أدخل كلمة المرور:");
-        if(p === ADMIN_PASS) document.getElementById('adminModal').style.display = 'flex';
-        else alert("خطأ!");
-    }
-
-    function closeAdmin() { document.getElementById('adminModal').style.display = 'none'; }
-
-    function updateDeliveryPrice() {
-        const w = document.getElementById('adminWilayaList').value;
-        const p = document.getElementById('newWilayaPrice').value;
-        if(w && p) {
-            deliveryPrices[w] = p;
-            localStorage.setItem('my_delivery', JSON.stringify(deliveryPrices));
-            alert("تم التحديث");
+    function showSection(section) {
+        const app = document.getElementById("app");
+        if (section === 'home') {
+            renderCustomerPage();
+        } else if (section === 'shipping') {
+            renderShippingPage();
         }
     }
 
-    function addProduct() {
-        const name = document.getElementById('pName').value;
-        const price = document.getElementById('pPrice').value;
-        const file = document.getElementById('pImg').files[0];
-        if(!name || !price || !file) return alert("أكمل البيانات");
-        const r = new FileReader();
-        r.onload = function(e) {
-            products.push({ name, price, img: e.target.result });
-            localStorage.setItem('my_prods', JSON.stringify(products));
-            renderProducts();
-            alert("تمت الإضافة");
-        };
-        r.readAsDataURL(file);
-    }
-
-    function renderProducts() {
-        const div = document.getElementById('productsDisplay');
-        div.innerHTML = '';
-        products.forEach(p => {
-            div.innerHTML += `
-                <div class="product-card">
-                    <img src="${p.img}">
-                    <h4>${p.name}</h4>
-                    <p style="color:#e67e22; font-weight:bold;">${p.price} دج</p>
-                    <button class="buy-btn" onclick="window.open('https://wa.me/213663700122?text=أريد طلب: ${p.name}')">📲 اطلب عبر واتساب</button>
-                </div>`;
+    function renderShippingPage() {
+        let html = `
+            <div class="category">
+                <h2>🚚 تكاليف التوصيل لولايات الوطن</h2>
+                <input type="text" class="search-box" id="stateSearch" placeholder="ابحث عن ولايتك (اسم أو رقم)..." onkeyup="filterStates()">
+                <table class="shipping-table">
+                    <thead>
+                        <tr><th>الولاية</th><th>للمنزل</th><th>للمكتب</th></tr>
+                    </thead>
+                    <tbody id="shippingTableBody">
+        `;
+        shippingPrices.forEach(s => {
+            html += `<tr><td>${s.id} - ${s.name}</td><td>${s.home} دج</td><td>${s.office} دج</td></tr>`;
         });
+        html += `</tbody></table></div>`;
+        document.getElementById("app").innerHTML = html;
     }
 
-    window.onload = initData;
-</script>
-</body>
-</html>
+    function filterStates() {
+        let val = document.getElementById("stateSearch").value.toLowerCase();
+        let rows = document.querySelectorAll("#shippingTableBody tr");
+        rows.forEach(r => r.style.display = r.innerText.toLowerCase().includes(val) ? "" : "none");
+    }
+
+    function renderCustomerPage() {
+        const app = document.getElementById("app");
+        let html = "";
+        for (let cat in products) {
+            if (products[cat].length === 0) continue;
+            html += `<div class="category" id="${cat}"><h2>${cat === 'women' ? '👗 نسائي' : cat === 'men' ? '👔 رجالي' : '📱 إلكترونيات'}</h2><div class="products">`;
+            products[cat].forEach(p => {
+                html += `
+                    <div class="product-card" onclick="openOrderModal('${p.name}', '${p.price}')">
+                        <img class="product-img" src="${p.image}">
+                        <div class="product-info">
+                            <div class="product-title">${p.name}</div>
+                            <div class="product-price">${p.price}</div>
+                            <button class="buy-btn">📲 اطلب الآن</button>
+                        </div>
+                    </div>`;
+            });
+            html += `</div></div>`;
+        }
+        app.innerHTML = html || "<p style='text-align:center'>أضف منتجات من لوحة التحكم</p>";
+    }
+
+    // إدارة لوحة التحكم للأسعار
+    function showAdminSection(section) {
+        document.getElementById("adminProductsSection").style.display = section === 'products' ? 'block' : 'none';
+        document.getElementById("adminShippingSection").style.display = section === 'shipping' ? 'block' : 'none';
+        document.getElementById("adminSettingsSection").style.display = section === 'settings' ? 'block' : 'none';
+        
+        if (section === 'shipping') {
+            const select = document.getElementById("shippingStateSelect");
+            select.innerHTML = shippingPrices.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+            loadStatePrice();
+        }
+    }
+
+    function loadStatePrice() {
+        const id = document.getElementById("shippingStateSelect").value;
+        const state = shippingPrices.find(s => s.id === id);
+        document.getElementById("homePriceInput").value = state.home;
+        document.getElementById("officePriceInput").value = state.office;
+    }
+
+    function saveShippingPrice() {
+        const id = document.getElementById("shippingStateSelect").value;
+        const index = shippingPrices.findIndex(s => s.id === id);
+        shippingPrices[index].home = document.getElementById("homePriceInput").value;
+        shippingPrices[index].office = document.getElementById("officePriceInput").value;
+        localStorage.setItem("shippingPrices", JSON.stringify(shippingPrices));
+        alert("✅ تم حفظ السعر");
+    }
+
+    // وظائف عامة (كما في الكود الأصلي)
+    function openOrderModal(name, price) {
+        document.getElementById("productNameDisplay").value = name + " - " + price;
+        const sel = document.getElementById("whatsappSelect");
+        sel.innerHTML = whatsappNumbers.map(n => `<option value="${n}">${n}</option>`).join('');
+        document.getElementById("orderModal").style.display = "flex";
+    }
+
+    function closeModal() { document.getElementById("orderModal").style.display = "none"; }
+    function closeAdminModal() { document.getElementById("adminModal").style.display = "none"; }
+    function showAdminLogin() { if(prompt("كلمة المرور:") === "admin123") document.getElementById("adminModal").style.display = "flex"; }
+    
+    function applyStoreSettings() {
+        document.getElementById("storeName").innerText = storeSettings.name;
+        document.getElementById("storeSlogan").innerText = storeSettings.slogan;
+    }
+
+    function sendToWhatsApp() {
+        const name = document.getElementById("customerName").value;
+        const phone = document.getElementById("customerPhone").value;
+        const address = document.getElementById("customerAddress").value;
+        const product = document.getElementById("productNameDisplay").value;
+        const num = document.getElementById("whatsapp
