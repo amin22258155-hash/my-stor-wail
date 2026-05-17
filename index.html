@@ -7,45 +7,29 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f4f7f6; color: #333; }
-        
-        /* الهيدر */
-        header { background: linear-gradient(135deg, #075e54, #128c7e); color: white; padding: 25px; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        header { background: linear-gradient(135deg, #075e54, #128c7e); color: white; padding: 25px; text-align: center; position: sticky; top: 0; z-index: 100; }
         .logo-img { max-height: 70px; margin-bottom: 10px; border-radius: 8px; display: none; }
-        
-        /* القائمة */
         nav { background: white; padding: 12px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); overflow-x: auto; white-space: nowrap; position: sticky; top: 120px; z-index: 99; }
         nav a { display: inline-block; margin: 0 10px; text-decoration: none; color: #075e54; font-weight: bold; padding: 8px 15px; border-radius: 20px; cursor: pointer; transition: 0.3s; }
-        nav a:hover { background: #e8f5f2; }
-
         .container { max-width: 1100px; margin: 20px auto; padding: 0 15px; min-height: 70vh; }
-        
-        /* الكروت والمنتجات */
-        .category-title { background: white; padding: 15px; border-right: 6px solid #128c7e; margin: 30px 0 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
-        .card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: 0.3s; cursor: pointer; text-align: center; }
-        .card:hover { transform: translateY(-5px); }
+        .category-title { background: white; padding: 15px; border-right: 6px solid #128c7e; margin: 30px 0 20px; border-radius: 8px; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
+        .card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: 0.3s; cursor: pointer; text-align: center; display: flex; flex-direction: column; }
         .card img { width: 100%; height: 200px; object-fit: cover; }
-        .card-body { padding: 15px; }
-        .price { color: #e67e22; font-size: 1.3rem; font-weight: bold; margin: 10px 0; }
-        .btn-order { background: #25d366; color: white; border: none; padding: 10px 20px; border-radius: 25px; width: 100%; font-weight: bold; cursor: pointer; }
-
-        /* الجداول */
-        .shipping-box { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { padding: 12px; text-align: right; border-bottom: 1px solid #eee; }
-        th { background: #f8f9fa; color: #075e54; }
-
-        /* المودال (النوافذ) */
+        .card-body { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; }
+        .product-desc { font-size: 0.9rem; color: #666; margin: 10px 0; line-height: 1.4; }
+        .price { color: #e67e22; font-size: 1.3rem; font-weight: bold; margin-bottom: 10px; }
+        .btn-order { background: #25d366; color: white; border: none; padding: 10px 20px; border-radius: 25px; width: 100%; font-weight: bold; cursor: pointer; margin-top: auto; }
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; }
         .modal-content { background: white; width: 95%; max-width: 600px; border-radius: 20px; padding: 25px; max-height: 90vh; overflow-y: auto; }
         input, select, textarea { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 10px; font-family: inherit; }
         .admin-tabs { display: flex; gap: 5px; margin-bottom: 20px; flex-wrap: wrap; }
         .tab-btn { flex: 1; padding: 10px; border: none; border-radius: 8px; cursor: pointer; background: #eee; font-weight: bold; }
         .tab-btn.active { background: #128c7e; color: white; }
-
-        .floating-admin { position: fixed; bottom: 20px; left: 20px; background: #1e1e2f; color: white; border: none; padding: 15px 25px; border-radius: 50px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-        .save-btn { background: #128c7e; color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        .floating-admin { position: fixed; bottom: 20px; left: 20px; background: #1e1e2f; color: white; border: none; padding: 15px 25px; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        .save-btn { background: #128c7e; color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; cursor: pointer; font-weight: bold; }
         .close-btn { background: #f44336; color: white; border: none; padding: 10px; width: 100%; border-radius: 10px; cursor: pointer; margin-top: 10px; }
+        .file-label { display: block; padding: 12px; background: #f8f9fa; border: 2px dashed #ddd; border-radius: 10px; text-align: center; cursor: pointer; margin: 10px 0; }
     </style>
 </head>
 <body>
@@ -56,7 +40,7 @@
     <p id="viewSlogan">التوصيل متوفر لـ 58 ولاية</p>
 </header>
 
-<nav id="navMenu">
+<nav>
     <a onclick="renderHome()">🏠 الرئيسية</a>
     <a onclick="renderShipping()">🚚 أسعار التوصيل</a>
 </nav>
@@ -76,11 +60,11 @@
         </div>
 
         <div id="tab1" class="tab-content">
-            <h4>تعديل اسم المتجر والشعار</h4>
-            <input type="text" id="setStoreName" placeholder="اسم المتجر الجديد">
-            <input type="text" id="setSlogan" placeholder="وصف المتجر (Slogan)">
-            <input type="text" id="setLogoUrl" placeholder="رابط صورة اللوغو (URL)">
-            <button class="save-btn" onclick="updateIdentity()">حفظ الهوية</button>
+            <h4>تعديل الهوية</h4>
+            <input type="text" id="setStoreName" placeholder="اسم المتجر">
+            <input type="text" id="setSlogan" placeholder="وصف المتجر">
+            <input type="text" id="setLogoUrl" placeholder="رابط اللوغو (اختياري)">
+            <button class="save-btn" onclick="updateIdentity()">حفظ</button>
         </div>
 
         <div id="tab2" class="tab-content" style="display:none">
@@ -91,30 +75,30 @@
                 <option value="electronics">إلكترونيات</option>
             </select>
             <input type="text" id="prodName" placeholder="اسم المنتج">
+            <textarea id="prodDesc" placeholder="وصف المنتج (مميزات، مقاسات، إلخ...)" rows="3"></textarea>
             <input type="text" id="prodPrice" placeholder="السعر (دج)">
-            <input type="text" id="prodImg" placeholder="رابط الصورة">
+            
+            <label class="file-label">
+                📸 اختر صورة من الهاتف
+                <input type="file" id="prodImgFile" accept="image/*" style="display:none" onchange="previewImg(this)">
+            </label>
+            <div id="imgPreviewArea" style="text-align:center; margin-bottom:10px;"></div>
+
             <button class="save-btn" onclick="addNewProduct()">إضافة المنتج</button>
         </div>
 
         <div id="tab3" class="tab-content" style="display:none">
-            <h4>إدارة الولايات وأسعار التوصيل</h4>
-            <input type="text" id="newStateName" placeholder="اسم الولاية الجديدة">
-            <input type="text" id="newHomePrice" placeholder="سعر التوصيل للمنزل">
-            <input type="text" id="newOfficePrice" placeholder="سعر التوصيل للمكتب">
-            <button class="save-btn" style="background:#2ecc71" onclick="addNewState()">➕ إضافة ولاية جديدة</button>
-            <hr style="margin:15px 0">
-            <p>تعديل سعر ولاية موجودة:</p>
-            <select id="editStateSelect" onchange="loadStateEdit()"></select>
-            <input type="text" id="editHomeP" placeholder="سعر المنزل">
-            <input type="text" id="editOfficeP" placeholder="سعر المكتب">
-            <button class="save-btn" onclick="saveStateEdit()">تحديث السعر</button>
+            <h4>التوصيل</h4>
+            <input type="text" id="newStateName" placeholder="اسم الولاية">
+            <input type="text" id="newHomePrice" placeholder="سعر المنزل">
+            <input type="text" id="newOfficePrice" placeholder="سعر المكتب">
+            <button class="save-btn" onclick="addNewState()">إضافة ولاية</button>
         </div>
 
         <div id="tab4" class="tab-content" style="display:none">
-            <h4>أرقام واتساب المدير</h4>
-            <p style="font-size:0.8rem; color:gray">ضع الرقم بالصيغة الدولية (مثل: 213663XXXXXX)</p>
-            <textarea id="setWA" placeholder="ضع الأرقام هنا، رقم في كل سطر" rows="4"></textarea>
-            <button class="save-btn" onclick="updateWA()">حفظ الأرقام</button>
+            <h4>الواتساب</h4>
+            <textarea id="setWA" placeholder="رقم الهاتف الدولي (213...)" rows="2"></textarea>
+            <button class="save-btn" onclick="updateWA()">حفظ</button>
         </div>
 
         <button class="close-btn" onclick="closeAdmin()">إغلاق</button>
@@ -122,94 +106,51 @@
 </div>
 
 <script>
-    // تهيئة البيانات
-    let storeData = JSON.parse(localStorage.getItem("jannah_config")) || {
-        name: "متجر جنة",
-        slogan: "التوصيل متوفر لـ 58 ولاية",
-        logo: "",
-        waNumbers: ["213663700122"]
-    };
-
-    let products = JSON.parse(localStorage.getItem("jannah_prods")) || {
-        women: [], men: [], electronics: []
-    };
-
-    let states = JSON.parse(localStorage.getItem("jannah_states")) || [
-        { name: "أدرار", home: "1000", office: "600" },
-        { name: "باتنة", home: "500", office: "300" },
-        { name: "الجزائر العاصمة", home: "400", office: "250" }
-    ];
+    let storeData = JSON.parse(localStorage.getItem("jannah_config")) || { name: "متجر جنة", slogan: "التوصيل متوفر لـ 58 ولاية", logo: "", waNumbers: ["213663700122"] };
+    let products = JSON.parse(localStorage.getItem("jannah_prods")) || { women: [], men: [], electronics: [] };
+    let states = JSON.parse(localStorage.getItem("jannah_states")) || [{ name: "باتنة", home: "500", office: "300" }];
+    let currentBase64Img = "";
 
     function init() {
         document.getElementById("viewStoreName").innerText = storeData.name;
         document.getElementById("viewSlogan").innerText = storeData.slogan;
-        document.getElementById("tabTitle").innerText = storeData.name;
-        if(storeData.logo) {
-            document.getElementById("viewLogo").src = storeData.logo;
-            document.getElementById("viewLogo").style.display = "inline-block";
-        }
+        if(storeData.logo) { document.getElementById("viewLogo").src = storeData.logo; document.getElementById("viewLogo").style.display = "inline-block"; }
         renderHome();
     }
 
-    // التنقل بين التبويبات
-    function switchTab(tabId) {
-        document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(tabId).style.display = 'block';
-        event.currentTarget.classList.add('active');
-        if(tabId === 'tab3') fillStatesList();
+    function previewImg(input) {
+        if (input.files && input.files[0]) {
+            let reader = new FileReader();
+            reader.onload = function(e) {
+                currentBase64Img = e.target.result;
+                document.getElementById("imgPreviewArea").innerHTML = `<img src="${currentBase64Img}" style="width:100px; border-radius:10px;">`;
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
     }
 
-    // إدارة الهوية
-    function updateIdentity() {
-        storeData.name = document.getElementById("setStoreName").value || storeData.name;
-        storeData.slogan = document.getElementById("setSlogan").value || storeData.slogan;
-        storeData.logo = document.getElementById("setLogoUrl").value || storeData.logo;
-        localStorage.setItem("jannah_config", JSON.stringify(storeData));
-        location.reload();
+    function addNewProduct() {
+        const cat = document.getElementById("prodCat").value;
+        const name = document.getElementById("prodName").value;
+        const desc = document.getElementById("prodDesc").value;
+        const price = document.getElementById("prodPrice").value;
+
+        if(!name || !price || !currentBase64Img) return alert("يرجى إكمال البيانات واختيار صورة");
+
+        products[cat].push({ name, desc, price, image: currentBase64Img });
+        localStorage.setItem("jannah_prods", JSON.stringify(products));
+        alert("✅ تمت إضافة المنتج بنجاح");
+        
+        // مسح الحقول بعد الإضافة
+        document.getElementById("prodName").value = "";
+        document.getElementById("prodDesc").value = "";
+        document.getElementById("prodPrice").value = "";
+        document.getElementById("imgPreviewArea").innerHTML = "";
+        currentBase64Img = "";
+        
+        renderHome();
     }
 
-    // إدارة الواتساب
-    function updateWA() {
-        const text = document.getElementById("setWA").value;
-        storeData.waNumbers = text.split('\n').filter(n => n.trim() !== "");
-        localStorage.setItem("jannah_config", JSON.stringify(storeData));
-        alert("✅ تم حفظ أرقام الواتساب");
-    }
-
-    // إدارة الولايات
-    function addNewState() {
-        const name = document.getElementById("newStateName").value;
-        const h = document.getElementById("newHomePrice").value;
-        const o = document.getElementById("newOfficePrice").value;
-        if(!name) return alert("أدخل اسم الولاية");
-        states.push({ name, home: h, office: o });
-        localStorage.setItem("jannah_states", JSON.stringify(states));
-        alert("✅ تمت إضافة الولاية بنجاح");
-        fillStatesList();
-    }
-
-    function fillStatesList() {
-        const sel = document.getElementById("editStateSelect");
-        sel.innerHTML = states.map((s, i) => `<option value="${i}">${s.name}</option>`).join('');
-        loadStateEdit();
-    }
-
-    function loadStateEdit() {
-        const i = document.getElementById("editStateSelect").value;
-        document.getElementById("editHomeP").value = states[i].home;
-        document.getElementById("editOfficeP").value = states[i].office;
-    }
-
-    function saveStateEdit() {
-        const i = document.getElementById("editStateSelect").value;
-        states[i].home = document.getElementById("editHomeP").value;
-        states[i].office = document.getElementById("editOfficeP").value;
-        localStorage.setItem("jannah_states", JSON.stringify(states));
-        alert("✅ تم التحديث");
-    }
-
-    // عرض الواجهة
     function renderHome() {
         const app = document.getElementById("appContent");
         app.innerHTML = "";
@@ -217,12 +158,14 @@
             if(products[cat].length > 0) {
                 let html = `<div class="category-title"><h2>${cat === 'women' ? '👗 نسائي' : cat === 'men' ? '👔 رجالي' : '📱 إلكترونيات'}</h2></div><div class="products-grid">`;
                 products[cat].forEach(p => {
-                    html += `<div class="card" onclick="sendOrder('${p.name}', '${p.price}')">
-                        <img src="${p.image}" onerror="this.src='https://via.placeholder.com/250x200?text=جنى+للمنتجات'">
+                    html += `
+                    <div class="card" onclick="sendOrder('${p.name}', '${p.price}')">
+                        <img src="${p.image}">
                         <div class="card-body">
                             <h3>${p.name}</h3>
+                            <p class="product-desc">${p.desc || 'لا يوجد وصف متاح'}</p>
                             <div class="price">${p.price} دج</div>
-                            <button class="btn-order">اطلب عبر واتساب</button>
+                            <button class="btn-order">اطلب الآن</button>
                         </div>
                     </div>`;
                 });
@@ -231,45 +174,29 @@
         }
     }
 
-    function renderShipping() {
-        const app = document.getElementById("appContent");
-        let table = `<div class="shipping-box"><h2>🚚 أسعار التوصيل للولايات</h2>
-        <table><thead><tr><th>الولاية</th><th>للمنزل</th><th>للمكتب (Yalidine)</th></tr></thead><tbody>`;
-        states.forEach(s => {
-            table += `<tr><td>${s.name}</td><td>${s.home} دج</td><td>${s.office} دج</td></tr>`;
-        });
-        app.innerHTML = table + "</tbody></table></div>";
-    }
-
     function sendOrder(name, price) {
-        const num = storeData.waNumbers[0]; // يأخذ أول رقم مخزن
-        const msg = `مرحباً متجر ${storeData.name}%0Aأود طلب منتج: ${name}%0Aالسعر: ${price} دج`;
-        window.open(`https://wa.me/${num}?text=${msg}`, "_blank");
+        const msg = `مرحباً متجر ${storeData.name}%0Aأود طلب: ${name}%0Aالسعر: ${price} دج`;
+        window.open(`https://wa.me/${storeData.waNumbers[0]}?text=${msg}`, "_blank");
     }
 
-    function addNewProduct() {
-        const cat = document.getElementById("prodCat").value;
-        products[cat].push({
-            name: document.getElementById("prodName").value,
-            price: document.getElementById("prodPrice").value,
-            image: document.getElementById("prodImg").value
-        });
-        localStorage.setItem("jannah_prods", JSON.stringify(products));
-        alert("✅ تمت إضافة المنتج");
-        renderHome();
-    }
-
-    function openAdmin() {
-        if(prompt("كلمة المرور:") === "admin123") {
-            document.getElementById("adminModal").style.display = "flex";
-            document.getElementById("setStoreName").value = storeData.name;
-            document.getElementById("setSlogan").value = storeData.slogan;
-            document.getElementById("setLogoUrl").value = storeData.logo;
-            document.getElementById("setWA").value = storeData.waNumbers.join('\n');
-        }
+    function openAdmin() { if(prompt("كلمة المرور:") === "admin123") document.getElementById("adminModal").style.display = "flex"; }
+    function closeAdmin() { document.getElementById("adminModal").style.display = "none"; }
+    function switchTab(id) {
+        document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(id).style.display = 'block';
+        event.currentTarget.classList.add('active');
     }
     
-    function closeAdmin() { document.getElementById("adminModal").style.display = "none"; }
+    // دوال المساعدة للهوية والواتساب والولايات (كما في الكود السابق)
+    function updateIdentity() { storeData.name = document.getElementById("setStoreName").value || storeData.name; localStorage.setItem("jannah_config", JSON.stringify(storeData)); location.reload(); }
+    function updateWA() { storeData.waNumbers = [document.getElementById("setWA").value]; localStorage.setItem("jannah_config", JSON.stringify(storeData)); alert("✅ تم الحفظ"); }
+    function addNewState() { states.push({ name: document.getElementById("newStateName").value, home: document.getElementById("newHomePrice").value, office: document.getElementById("newOfficePrice").value }); localStorage.setItem("jannah_states", JSON.stringify(states)); alert("✅ تمت الإضافة"); }
+    function renderShipping() {
+        let table = `<div style="background:white; padding:20px; border-radius:15px;"><h2>🚚 أسعار التوصيل</h2><table><thead><tr><th>الولاية</th><th>للمنزل</th><th>للمكتب</th></tr></thead><tbody>`;
+        states.forEach(s => table += `<tr><td>${s.name}</td><td>${s.home} دج</td><td>${s.office} دج</td></tr>`);
+        document.getElementById("appContent").innerHTML = table + "</tbody></table></div>";
+    }
 
     init();
 </script>
