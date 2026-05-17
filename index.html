@@ -3,41 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="pageTitle">متجري - متجر العمولة</title>
+    <title>متجر جنة - إدارة العمولة</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Tahoma', 'Segoe UI', Arial, sans-serif; background: #f5f5f5; color: #333; }
-        header { background: linear-gradient(135deg, #075e54, #128c7e); color: white; padding: 20px; text-align: center; position: sticky; top: 0; z-index: 100; transition: background 0.3s; }
-        .logo-container { display: flex; align-items: center; justify-content: center; gap: 15px; flex-wrap: wrap; }
-        .store-logo { max-height: 60px; max-width: 120px; object-fit: contain; background: white; padding: 5px; border-radius: 10px; }
+        header { background: linear-gradient(135deg, #075e54, #128c7e); color: white; padding: 20px; text-align: center; position: sticky; top: 0; z-index: 100; }
+        .logo-container { display: flex; align-items: center; justify-content: center; gap: 15px; }
         .store-name { font-size: 1.8rem; }
-        .admin-btn { position: fixed; bottom: 20px; left: 20px; background: #1e1e2f; color: white; border: none; padding: 12px 20px; border-radius: 50px; cursor: pointer; z-index: 200; font-weight: bold; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
         nav { background: white; padding: 12px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); overflow-x: auto; white-space: nowrap; }
-        nav a { display: inline-block; margin: 0 10px; text-decoration: none; color: #075e54; font-weight: bold; padding: 8px 16px; border-radius: 25px; transition: 0.3s; cursor: pointer; }
-        nav a:hover, nav a.active { background: #075e54; color: white; }
+        nav a { display: inline-block; margin: 0 10px; text-decoration: none; color: #075e54; font-weight: bold; padding: 8px 16px; border-radius: 25px; cursor: pointer; }
+        nav a:hover { background: #075e54; color: white; }
         .container { max-width: 1200px; margin: 20px auto; padding: 0 15px; }
-        .category { margin-bottom: 40px; scroll-margin-top: 80px; }
+        .category { margin-bottom: 40px; }
         .category h2 { background: #fff; padding: 12px 20px; border-right: 5px solid #128c7e; margin-bottom: 20px; border-radius: 10px; }
         .products { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
-        .product-card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: transform 0.2s; cursor: pointer; }
+        .product-card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); cursor: pointer; transition: 0.3s; }
         .product-card:hover { transform: translateY(-5px); }
         .product-img { width: 100%; height: 200px; object-fit: cover; background: #eee; }
         .product-info { padding: 15px; }
         .product-price { color: #e67e22; font-size: 1.3rem; font-weight: bold; margin: 10px 0; }
         .buy-btn { display: block; background: #25d366; color: white; text-align: center; padding: 10px; border-radius: 30px; font-weight: bold; border: none; width: 100%; cursor: pointer; }
         
-        /* تصميم جدول الشحن */
         .shipping-table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; }
         .shipping-table th, .shipping-table td { padding: 15px; text-align: right; border-bottom: 1px solid #eee; }
         .shipping-table th { background: #128c7e; color: white; }
-        .search-box { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 10px; font-size: 1rem; }
+        .search-box { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 10px; }
 
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; }
-        .modal-content { background: white; width: 90%; max-width: 500px; border-radius: 20px; padding: 25px; text-align: center; max-height: 90vh; overflow-y: auto; }
-        .modal-content input, .modal-content textarea, .modal-content select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 10px; font-family: inherit; }
-        .modal-buttons { display: flex; gap: 10px; margin-top: 20px; }
-        .send-btn, .save-btn { background: #25d366; color: white; border: none; padding: 12px; flex: 1; border-radius: 30px; cursor: pointer; }
-        .cancel-btn { background: #ccc; color: #333; border: none; padding: 12px; flex: 1; border-radius: 30px; cursor: pointer; }
+        .modal-content { background: white; width: 90%; max-width: 500px; border-radius: 20px; padding: 25px; max-height: 90vh; overflow-y: auto; position: relative; }
+        .modal-content input, .modal-content select, .modal-content textarea { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 10px; }
+        
+        .admin-btn { position: fixed; bottom: 20px; left: 20px; background: #1e1e2f; color: white; border: none; padding: 12px 20px; border-radius: 50px; cursor: pointer; z-index: 200; font-weight: bold; }
+        .save-btn { background: #25d366; color: white; border: none; padding: 12px; width: 100%; border-radius: 30px; cursor: pointer; margin-top: 10px; }
+        .cancel-btn { background: #ccc; color: #333; border: none; padding: 10px; width: 100%; border-radius: 30px; cursor: pointer; margin-top: 10px; }
         footer { background: #1e1e2f; color: #aaa; text-align: center; padding: 20px; margin-top: 40px; }
     </style>
 </head>
@@ -45,211 +43,185 @@
 
 <header id="mainHeader">
     <div class="logo-container">
-        <img id="storeLogo" class="store-logo" src="" alt="شعار المتجر" style="display:none">
-        <h1 id="storeName" class="store-name">🇩🇿 متجري</h1>
+        <h1 id="storeName" class="store-name">🇩🇿 متجر جنة</h1>
     </div>
-    <p id="storeSlogan">اطلب عبر واتساب - نوفر لك أفضل المنتجات بالدينار الجزائري</p>
+    <p id="storeSlogan">أفضل المنتجات بأسعار تنافسية - التوصيل لـ 58 ولاية</p>
 </header>
 
-<nav id="navLinks">
+<nav>
     <a onclick="showSection('home')">🏠 الرئيسية</a>
-    <a data-cat="women">👗 نسائي</a>
-    <a data-cat="men">👔 رجالي</a>
-    <a data-cat="electronics">📱 إلكترونيات</a>
     <a onclick="showSection('shipping')">🚚 أسعار التوصيل</a>
 </nav>
 
-<div class="container" id="app"></div>
+<div class="container" id="app">
+    </div>
 
-<button class="admin-btn" onclick="showAdminLogin()">🔐 لوحة التحكم</button>
-
-<footer>
-    <p>© 2026 جنة - جميع الطلبات عبر واتساب - الأسعار بالدينار الجزائري (دج)</p>
-</footer>
+<button class="admin-btn" id="adminControlBtn">🔐 لوحة التحكم</button>
 
 <div id="orderModal" class="modal">
     <div class="modal-content">
         <h3>📝 أتمم طلبك</h3>
-        <input type="text" id="customerName" placeholder="الاسم الكامل">
-        <input type="tel" id="customerPhone" placeholder="رقم الجوال">
-        <textarea id="customerAddress" rows="2" placeholder="العنوان والولاية"></textarea>
-        <input type="text" id="productNameDisplay" readonly style="background:#f0f0f0;">
-        <select id="whatsappSelect"></select>
-        <div class="modal-buttons">
-            <button class="send-btn" onclick="sendToWhatsApp()">إرسال للواتساب</button>
-            <button class="cancel-btn" onclick="closeModal()">إلغاء</button>
-        </div>
+        <input type="text" id="custName" placeholder="الاسم الكامل">
+        <input type="tel" id="custPhone" placeholder="رقم الهاتف">
+        <input type="text" id="custProd" readonly style="background:#f9f9f9">
+        <button class="save-btn" onclick="sendOrder()">إرسال عبر واتساب</button>
+        <button class="cancel-btn" onclick="closeModals()">إلغاء</button>
     </div>
 </div>
 
 <div id="adminModal" class="modal">
-    <div class="modal-content" style="max-width:600px">
-        <h3>⚙️ لوحة التحكم</h3>
-        <div style="display:flex; gap:5px; margin-bottom:15px; flex-wrap:wrap">
-            <button onclick="showAdminSection('products')" style="flex:1; padding:8px; background:#075e54; color:white; border:none; border-radius:10px">📦 المنتجات</button>
-            <button onclick="showAdminSection('shipping')" style="flex:1; padding:8px; background:#128c7e; color:white; border:none; border-radius:10px">🚚 التوصيل</button>
-            <button onclick="showAdminSection('settings')" style="flex:1; padding:8px; background:#e67e22; color:white; border:none; border-radius:10px">🎨 الإعدادات</button>
-        </div>
+    <div class="modal-content">
+        <h2>⚙️ إعدادات المتجر</h2>
+        <hr><br>
+        <h4>📦 إضافة منتج</h4>
+        <select id="newCat">
+            <option value="women">نسائي</option>
+            <option value="men">رجالي</option>
+            <option value="electronics">إلكترونيات</option>
+        </select>
+        <input type="text" id="newName" placeholder="اسم المنتج">
+        <input type="text" id="newPrice" placeholder="السعر (دج)">
+        <input type="text" id="newImg" placeholder="رابط الصورة">
+        <button class="save-btn" onclick="addProduct()">حفظ المنتج</button>
         
-        <div id="adminProductsSection">
-            <select id="adminAction" onchange="updateAdminFields()">
-                <option value="add">➕ إضافة منتج جديد</option>
-                <option value="delete">🗑️ حذف منتج</option>
-            </select>
-            <div id="adminFields"></div>
-            <button class="save-btn" onclick="executeAdminAction()" style="margin-top:10px">تنفيذ</button>
-        </div>
-
-        <div id="adminShippingSection" style="display:none">
-            <h4>تعديل أسعار التوصيل (الولاية)</h4>
-            <select id="shippingStateSelect" onchange="loadStatePrice()"></select>
-            <input type="text" id="homePriceInput" placeholder="سعر التوصيل للمنزل">
-            <input type="text" id="officePriceInput" placeholder="سعر التوصيل للمكتب">
-            <button class="save-btn" onclick="saveShippingPrice()">حفظ السعر</button>
-        </div>
-
-        <div id="adminSettingsSection" style="display:none">
-            <input type="text" id="storeNameInput" placeholder="اسم المتجر">
-            <input type="text" id="storeSloganInput" placeholder="الشعار النصي">
-            <button class="save-btn" onclick="saveStoreSettings()">حفظ الإعدادات</button>
-        </div>
+        <br><br>
+        <h4>🚚 أسعار التوصيل</h4>
+        <select id="stateSelect" onchange="loadStateData()"></select>
+        <input type="text" id="hPrice" placeholder="سعر المنزل">
+        <input type="text" id="oPrice" placeholder="سعر المكتب">
+        <button class="save-btn" onclick="saveShipping()">تحديث سعر الولاية</button>
         
-        <button class="cancel-btn" onclick="closeAdminModal()" style="margin-top:15px">إغلاق</button>
+        <button class="cancel-btn" onclick="closeModals()">إغلاق</button>
     </div>
 </div>
 
 <script>
-    let products = { women: [], men: [], electronics: [], summer: [], health: [] };
-    let shippingPrices = [];
-    let whatsappNumbers = ["213663700122"];
-    let storeSettings = { name: "🇩🇿 متجري", slogan: "اطلب عبر واتساب", primaryColor: "#075e54", logo: "" };
-
-    // تهيئة الولايات الافتراضية
-    const defaultStates = [
+    // البيانات
+    let products = JSON.parse(localStorage.getItem("jannah_prods")) || { women: [], men: [], electronics: [] };
+    let shipping = JSON.parse(localStorage.getItem("jannah_ship")) || [
         { id: "01", name: "أدرار", home: "1000", office: "600" },
         { id: "05", name: "باتنة", home: "500", office: "300" },
-        { id: "16", name: "الجزائر العاصمة", home: "400", office: "250" },
+        { id: "16", name: "العاصمة", home: "400", office: "250" },
         { id: "31", name: "وهران", home: "600", office: "400" }
     ];
 
-    function init() {
-        const savedProducts = localStorage.getItem("myAffiliateProducts");
-        if (savedProducts) products = JSON.parse(savedProducts);
-        
-        const savedShipping = localStorage.getItem("shippingPrices");
-        shippingPrices = savedShipping ? JSON.parse(savedShipping) : defaultStates;
-        
-        const savedSettings = localStorage.getItem("storeSettings");
-        if (savedSettings) storeSettings = JSON.parse(savedSettings);
-
-        applyStoreSettings();
+    // تشغيل عند التحميل
+    window.onload = function() {
         showSection('home');
-    }
-
-    function showSection(section) {
-        const app = document.getElementById("app");
-        if (section === 'home') {
-            renderCustomerPage();
-        } else if (section === 'shipping') {
-            renderShippingPage();
-        }
-    }
-
-    function renderShippingPage() {
-        let html = `
-            <div class="category">
-                <h2>🚚 تكاليف التوصيل لولايات الوطن</h2>
-                <input type="text" class="search-box" id="stateSearch" placeholder="ابحث عن ولايتك (اسم أو رقم)..." onkeyup="filterStates()">
-                <table class="shipping-table">
-                    <thead>
-                        <tr><th>الولاية</th><th>للمنزل</th><th>للمكتب</th></tr>
-                    </thead>
-                    <tbody id="shippingTableBody">
-        `;
-        shippingPrices.forEach(s => {
-            html += `<tr><td>${s.id} - ${s.name}</td><td>${s.home} دج</td><td>${s.office} دج</td></tr>`;
-        });
-        html += `</tbody></table></div>`;
-        document.getElementById("app").innerHTML = html;
-    }
-
-    function filterStates() {
-        let val = document.getElementById("stateSearch").value.toLowerCase();
-        let rows = document.querySelectorAll("#shippingTableBody tr");
-        rows.forEach(r => r.style.display = r.innerText.toLowerCase().includes(val) ? "" : "none");
-    }
-
-    function renderCustomerPage() {
-        const app = document.getElementById("app");
-        let html = "";
-        for (let cat in products) {
-            if (products[cat].length === 0) continue;
-            html += `<div class="category" id="${cat}"><h2>${cat === 'women' ? '👗 نسائي' : cat === 'men' ? '👔 رجالي' : '📱 إلكترونيات'}</h2><div class="products">`;
-            products[cat].forEach(p => {
-                html += `
-                    <div class="product-card" onclick="openOrderModal('${p.name}', '${p.price}')">
-                        <img class="product-img" src="${p.image}">
-                        <div class="product-info">
-                            <div class="product-title">${p.name}</div>
-                            <div class="product-price">${p.price}</div>
-                            <button class="buy-btn">📲 اطلب الآن</button>
-                        </div>
-                    </div>`;
-            });
-            html += `</div></div>`;
-        }
-        app.innerHTML = html || "<p style='text-align:center'>أضف منتجات من لوحة التحكم</p>";
-    }
-
-    // إدارة لوحة التحكم للأسعار
-    function showAdminSection(section) {
-        document.getElementById("adminProductsSection").style.display = section === 'products' ? 'block' : 'none';
-        document.getElementById("adminShippingSection").style.display = section === 'shipping' ? 'block' : 'none';
-        document.getElementById("adminSettingsSection").style.display = section === 'settings' ? 'block' : 'none';
         
-        if (section === 'shipping') {
-            const select = document.getElementById("shippingStateSelect");
-            select.innerHTML = shippingPrices.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
-            loadStatePrice();
+        // تفعيل زر لوحة التحكم برمجياً لضمان العمل
+        document.getElementById("adminControlBtn").onclick = function() {
+            let pass = prompt("أدخل كلمة المرور (الافتراضية: admin123):");
+            if (pass === "admin123") {
+                document.getElementById("adminModal").style.display = "flex";
+                populateStates();
+            } else {
+                alert("خطأ في كلمة المرور");
+            }
+        };
+    };
+
+    function showSection(type) {
+        const app = document.getElementById("app");
+        app.innerHTML = "";
+        
+        if (type === 'home') {
+            let hasProds = false;
+            for (let cat in products) {
+                if (products[cat].length > 0) {
+                    hasProds = true;
+                    let section = `<div class="category"><h2>${cat}</h2><div class="products">`;
+                    products[cat].forEach(p => {
+                        section += `
+                            <div class="product-card" onclick="openOrder('${p.name}', '${p.price}')">
+                                <img src="${p.image}" class="product-img" onerror="this.src='https://via.placeholder.com/250'">
+                                <div class="product-info">
+                                    <div class="product-title"><b>${p.name}</b></div>
+                                    <div class="product-price">${p.price} دج</div>
+                                    <button class="buy-btn">اطلب الآن</button>
+                                </div>
+                            </div>`;
+                    });
+                    section += `</div></div>`;
+                    app.innerHTML += section;
+                }
+            }
+            if(!hasProds) app.innerHTML = "<p style='text-align:center'>المتجر فارغ حالياً. أضف منتجات من لوحة التحكم.</p>";
+        } else {
+            let table = `
+                <div class="category">
+                    <h2>🚚 أسعار التوصيل لولايات الجزائر</h2>
+                    <input type="text" class="search-box" placeholder="ابحث عن ولايتك..." onkeyup="searchState(this)">
+                    <table class="shipping-table">
+                        <thead><tr><th>الولاية</th><th>للمنزل</th><th>للمكتب</th></tr></thead>
+                        <tbody id="shipBody">`;
+            shipping.forEach(s => {
+                table += `<tr><td>${s.id} - ${s.name}</td><td>${s.home} دج</td><td>${s.office} دج</td></tr>`;
+            });
+            table += `</tbody></table></div>`;
+            app.innerHTML = table;
         }
     }
 
-    function loadStatePrice() {
-        const id = document.getElementById("shippingStateSelect").value;
-        const state = shippingPrices.find(s => s.id === id);
-        document.getElementById("homePriceInput").value = state.home;
-        document.getElementById("officePriceInput").value = state.office;
-    }
-
-    function saveShippingPrice() {
-        const id = document.getElementById("shippingStateSelect").value;
-        const index = shippingPrices.findIndex(s => s.id === id);
-        shippingPrices[index].home = document.getElementById("homePriceInput").value;
-        shippingPrices[index].office = document.getElementById("officePriceInput").value;
-        localStorage.setItem("shippingPrices", JSON.stringify(shippingPrices));
-        alert("✅ تم حفظ السعر");
-    }
-
-    // وظائف عامة (كما في الكود الأصلي)
-    function openOrderModal(name, price) {
-        document.getElementById("productNameDisplay").value = name + " - " + price;
-        const sel = document.getElementById("whatsappSelect");
-        sel.innerHTML = whatsappNumbers.map(n => `<option value="${n}">${n}</option>`).join('');
+    function openOrder(name, price) {
+        document.getElementById("custProd").value = name + " (" + price + " دج)";
         document.getElementById("orderModal").style.display = "flex";
     }
 
-    function closeModal() { document.getElementById("orderModal").style.display = "none"; }
-    function closeAdminModal() { document.getElementById("adminModal").style.display = "none"; }
-    function showAdminLogin() { if(prompt("كلمة المرور:") === "admin123") document.getElementById("adminModal").style.display = "flex"; }
-    
-    function applyStoreSettings() {
-        document.getElementById("storeName").innerText = storeSettings.name;
-        document.getElementById("storeSlogan").innerText = storeSettings.slogan;
+    function sendOrder() {
+        const name = document.getElementById("custName").value;
+        const prod = document.getElementById("custProd").value;
+        if(!name) return alert("يرجى كتابة الاسم");
+        window.open(`https://wa.me/213663700122?text=طلب جديد من متجر جنة:%0Aالزبون: ${name}%0Aالمنتج: ${prod}`);
+        closeModals();
     }
 
-    function sendToWhatsApp() {
-        const name = document.getElementById("customerName").value;
-        const phone = document.getElementById("customerPhone").value;
-        const address = document.getElementById("customerAddress").value;
-        const product = document.getElementById("productNameDisplay").value;
-        const num = document.getElementById("whatsapp
+    function addProduct() {
+        const cat = document.getElementById("newCat").value;
+        const name = document.getElementById("newName").value;
+        const price = document.getElementById("newPrice").value;
+        const img = document.getElementById("newImg").value;
+        
+        if(!name || !price) return alert("أكمل البيانات");
+        
+        products[cat].push({ name, price, image: img });
+        localStorage.setItem("jannah_prods", JSON.stringify(products));
+        alert("تمت الإضافة بنجاح");
+        showSection('home');
+    }
+
+    function populateStates() {
+        const sel = document.getElementById("stateSelect");
+        sel.innerHTML = shipping.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+        loadStateData();
+    }
+
+    function loadStateData() {
+        const id = document.getElementById("stateSelect").value;
+        const s = shipping.find(x => x.id === id);
+        document.getElementById("hPrice").value = s.home;
+        document.getElementById("oPrice").value = s.office;
+    }
+
+    function saveShipping() {
+        const id = document.getElementById("stateSelect").value;
+        const index = shipping.findIndex(x => x.id === id);
+        shipping[index].home = document.getElementById("hPrice").value;
+        shipping[index].office = document.getElementById("oPrice").value;
+        localStorage.setItem("jannah_ship", JSON.stringify(shipping));
+        alert("تم تحديث السعر");
+    }
+
+    function searchState(input) {
+        let val = input.value.toLowerCase();
+        let rows = document.querySelectorAll("#shipBody tr");
+        rows.forEach(r => r.style.display = r.innerText.toLowerCase().includes(val) ? "" : "none");
+    }
+
+    function closeModals() {
+        document.querySelectorAll(".modal").forEach(m => m.style.display = "none");
+    }
+</script>
+
+</body>
+</html>
